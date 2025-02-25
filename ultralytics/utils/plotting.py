@@ -1363,15 +1363,5 @@ def feature_visualization(x, module_type, stage, n=32, save_dir=Path("runs/detec
             f = save_dir / f"stage{stage}_{module_type.split('.')[-1]}_features.png"  # filename
 
             blocks = torch.chunk(x[0].cpu(), channels, dim=0)  # select batch index 0, block by channels
-            n = min(n, channels)  # number of plots
-            _, ax = plt.subplots(math.ceil(n / 8), 8, tight_layout=True)  # 8 rows x n/8 cols
-            ax = ax.ravel()
-            plt.subplots_adjust(wspace=0.05, hspace=0.05)
-            for i in range(n):
-                ax[i].imshow(blocks[i].squeeze())  # cmap='gray'
-                ax[i].axis("off")
-
             LOGGER.info(f"Saving {f}... ({n}/{channels})")
-            plt.savefig(f, dpi=300, bbox_inches="tight")
-            plt.close()
             np.save(str(f.with_suffix(".npy")), x[0].cpu().numpy())  # npy save
