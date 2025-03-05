@@ -68,7 +68,8 @@ class RTDETRPredictor(BasePredictor):
             pred[..., [0, 2]] *= ow
             pred[..., [1, 3]] *= oh
             results.append(Results(orig_img, path=img_path, names=self.model.names, boxes=pred))
-        return results,preds[1]
+        results.append(preds[1])
+        return results
 
     def pre_transform(self, im):
         """
