@@ -583,14 +583,19 @@ class RTDETRDetectionModel(DetectionModel):
             x = m(x)  # run
             y.append(x if m.i in self.save else None)  # save output
             if visualize:
-                array_heatmap.append(feature_visualization(x, m.type, m.i, save_dir=visualize))
+                continue
+            else:
+                kk = feature_visualization(x, m.type, m.i, save_dir=False)
+                # print("Feature Numpy: ",kk.shape)
+                array_heatmap.append(kk)
             if embed and m.i in embed:
                 embeddings.append(torch.nn.functional.adaptive_avg_pool2d(x, (1, 1)).squeeze(-1).squeeze(-1))  # flatten
                 if m.i == max(embed):
                     return torch.unbind(torch.cat(embeddings, 1), dim=0)
         head = self.model[-1]
         x = head([y[j] for j in head.f], batch)  # head inference
-        return x,array_heatmap
+        # x.append(array_heatmap)
+        return (x,array_heatmap)
 
 
 class WorldModel(DetectionModel):
