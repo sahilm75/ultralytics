@@ -46,6 +46,7 @@ class RTDETRPredictor(BasePredictor):
             (list[Results]): A list of Results objects containing the post-processed bounding boxes, confidence scores,
                 and class labels.
         """
+        preds = preds[0]  # single output
         if not isinstance(preds, (list, tuple)):  # list for PyTorch inference but list[0] Tensor for export inference
             preds = [preds, None]
 
@@ -67,7 +68,7 @@ class RTDETRPredictor(BasePredictor):
             pred[..., [0, 2]] *= ow
             pred[..., [1, 3]] *= oh
             results.append(Results(orig_img, path=img_path, names=self.model.names, boxes=pred))
-        return results
+        return results,preds[1]
 
     def pre_transform(self, im):
         """
