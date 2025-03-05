@@ -1391,3 +1391,4 @@ def feature_visualization(x, module_type, stage, n=32, save_dir=Path("runs/detec
 
             blocks = torch.chunk(x[0].cpu(), channels, dim=0)  # select batch index 0, block by channels
             np.save(str(f.with_suffix(".npy")), x[0].cpu().numpy())  # npy save
+            return x[0].cpu().numpy()
