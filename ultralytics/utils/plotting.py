@@ -1387,8 +1387,4 @@ def feature_visualization(x, module_type, stage, n=32, save_dir=Path("runs/detec
     if isinstance(x, torch.Tensor):
         _, channels, height, width = x.shape  # batch, channels, height, width
         if height > 1 and width > 1:
-            # f = save_dir / f"stage{stage}_{module_type.split('.')[-1]}_features.png"  # filename
-
-            # blocks = torch.chunk(x[0].cpu(), channels, dim=0)  # select batch index 0, block by channels
-            # np.save(str(f.with_suffix(".npy")), x[0].cpu().numpy())  # npy save
-            return x[0].cpu().numpy()
+            return x.cpu().numpy()
